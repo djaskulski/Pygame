@@ -1,0 +1,39 @@
+Introduction
+------------
+***Work Invaders***
+
+It is my Space Invaders clone built using Pygame library. The game tells the story of a nerd who wants to get out of the clutches of the army to join a corporation.
+
+Now:
+basic sounds, random enemies, collision, score counter, game over
+
+Soon:
+main menu, Player/Enemy selection, levels
+
+
+
+Requirements
+------------
+Pycharm IDE is useful.
+Python==3.8.5
+
+src/requirements.txt
+pip==21.0.1
+pygame==2.0.1
+setuptools==54.0.0
+
+
+
+Installation
+------------
+In cmd:
+[Create and activate venv](https://docs.python.org/3.8/library/venv.html)
+pip install requirements.txt
+
+
+
+Usage
+-----
+In cmd:
+cd src/
+python main.py

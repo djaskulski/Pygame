@@ -3,40 +3,38 @@ import random
 import math
 from pygame import mixer
 
-# Funkcja inicjująca
+# init function
 pygame.init()
 
-# Tworzymy okno gry
+# game window, and background image
 screen = pygame.display.set_mode((800, 600))
-
-# Tworzymy tło
 background = pygame.image.load('background.jpg')
 
-# Dzwiek w tle
+# background music
 mixer.music.load('background_music.ogg')
 mixer.music.play(-1)
 
-# Ustawienie tytułu
+# title, icon
 pygame.display.set_caption('Work Invaders')
 icon = pygame.image.load('helmet.png')
 pygame.display.set_icon(icon)
 
-# Gracz
+# player - initial state
 player_img = pygame.image.load('nerd.png')
 player_X = 370
 player_Y = 480
 player_X_change = 0
 
-# Wynik
+# value - initial state
 score_value = 0
 font = pygame.font.Font('freesansbold.ttf', 32)
 text_X = 10
 text_Y = 10
 
-# Napis koniec gry
+# game over font
 over_font = pygame.font.Font('freesansbold.ttf', 64)
 
-# Przeciwnicy
+# Enemies - random spawn
 enemy_img = []
 enemy_X = []
 enemy_Y = []
@@ -51,7 +49,7 @@ for i in range(num_of_enemies):
     enemy_X_change.append(1)
     enemy_Y_change.append(40)
 
-# Pocisk - ready
+# bullet - ready state
 bullet_img = pygame.image.load('tomato.png')
 bullet_X = 0
 bullet_Y = 480
@@ -92,17 +90,17 @@ def is_collision(enemy_X, enemy_Y, bullet_X, bullet_Y):
         return False
 
 
-# Pętla utrzymująca grę
+# game loop
 running = True
 while running:
-    # RGB - red, green, blue
+    # RGB
     screen.fill((0, 128, 128))
     screen.blit(background, (0, 0))
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        # kierowanie postacią
+        # player movement
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 player_X_change = -1
@@ -112,7 +110,7 @@ while running:
                 if bullet_state == 'ready':
                     bullet_sound = mixer.Sound('laser.wav')
                     bullet_sound.play()
-                    # pobiera aktualną pozycję gracza
+                    # current player's location
                     bullet_X = player_X
                     fire_bullet(player_X, bullet_Y)
 
@@ -120,8 +118,8 @@ while running:
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                 player_X_change = 0
 
-    # Sprawdzanie granic
-    # Ruch gracza
+    # window boundaries
+    # player
     player_X += player_X_change
 
     if player_X <= 0:
@@ -129,10 +127,10 @@ while running:
     elif player_X >= 736:
         player_X = 736
 
-    # Ruch przeciwnika
-
+    # enemies
     for i in range(num_of_enemies):
-        # Koniec gry
+
+        # end game
         if enemy_Y[i] > 440:
             for j in range(num_of_enemies):
                 enemy_Y[j] = 2000
@@ -146,7 +144,8 @@ while running:
         elif enemy_X[i] >= 736:
             enemy_X_change[i] = -1
             enemy_Y[i] += enemy_Y_change[i]
-        # Kolizja
+
+        # collision
         collision = is_collision(enemy_X[i], enemy_Y[i], bullet_X, bullet_Y)
         if collision:
             explosion_sound = mixer.Sound('explosion.wav')
@@ -160,7 +159,7 @@ while running:
 
         enemy(enemy_X[i], enemy_Y[i], i)
 
-    # Ruch pocisku
+    # bullet movement
     if bullet_Y <= 0:
         bullet_Y = 480
         bullet_state = 'ready'
